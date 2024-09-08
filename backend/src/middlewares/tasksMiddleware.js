@@ -1,4 +1,4 @@
-const validateBody = (req, res, next) => {
+const validateFieldTitle = (req, res, next) => {
     const { body } = req
 
     if (body.title === undefined)
@@ -23,6 +23,6 @@ const validateFieldStatus = (req, res, next) => {
 }
 
 module.exports = {
-    validateBody,
+    validateFieldTitle,
     validateFieldStatus,
 }

@@ -4,11 +4,14 @@ const tasksMiddleware = require('./middlewares/tasksMiddleware')
 const router = express.Router()
 
 router.get('/tasks', tasksController.getAll)
-router.post('/tasks', tasksMiddleware.validateBody, tasksController.createTask)
+router.post('/tasks', tasksMiddleware.validateFieldTitle, tasksController.createTask)
 router.delete('/tasks/:id',tasksController.deleteTask)
-router.put('/tasks/:id',
+
+const updateStack = [
+    tasksMiddleware.validateFieldTitle,
     tasksMiddleware.validateFieldStatus,
-    tasksMiddleware.validateBody,
-    tasksController.updateTask)
+    tasksController.updateTask] 
+
+router.put('/tasks/:id',updateStack)
 
 module.exports = router
