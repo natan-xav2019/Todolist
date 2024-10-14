@@ -24,6 +24,14 @@ const addTask = async (event) => {
     inputTask.value = ''
 }
 
+const deleteTask = async (id) => {
+    await fetch(`${url}/${id}`, {
+        method: `delete`,
+    })
+
+    loadTasks()
+}
+
 const formatDate = (dataUTC) => {
     const options = { dateStyle: 'long', timeStyle: 'short' }
     const date = new Date(dataUTC).toLocaleString('pt-br',options)
@@ -93,6 +101,8 @@ const createRow = (task) => {
 
     const editButton = createButton("edit")
     const deleteButton = createButton("delete")
+
+    deleteButton.addEventListener('click',() => deleteTask(id))
 
     tdActions.appendChild(editButton)
     tdActions.appendChild(deleteButton)
