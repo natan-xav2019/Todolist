@@ -32,6 +32,17 @@ const deleteTask = async (id) => {
     loadTasks()
 }
 
+const updateTask = async ({id ,title, status}) => {
+
+    await fetch(`${url}/${id}`, {
+        method: `put`,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ title, status })
+    })
+
+    loadTasks()
+}
+
 const formatDate = (dataUTC) => {
     const options = { dateStyle: 'long', timeStyle: 'short' }
     const date = new Date(dataUTC).toLocaleString('pt-br',options)
@@ -97,10 +108,29 @@ const createRow = (task) => {
     const tdActions = createElement('td')
 
     const select = createSelect(options,status)
+    select.addEventListener('change', ({ target }) => updateTask({ ...task, status: target.value}))
     tdStatus.appendChild(select)
 
     const editButton = createButton("edit")
     const deleteButton = createButton("delete")
+
+    
+    const editForm = createElement('form')
+    const editInput = createElement('input')
+    editInput.value = title
+
+    editForm.appendChild(editInput)
+    editForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        updateTask({ id, title: editInput.value, status })
+    })
+    
+    editButton.addEventListener('click', () => {
+        tdTitle.innerText = ''
+        tdTitle.appendChild(editForm)
+    })
+
+
 
     deleteButton.addEventListener('click',() => deleteTask(id))
 
